@@ -1,0 +1,22 @@
+gcloud compute instances create sentiment-service \
+ --zone=us-central1-b \
+ --machine-type=c3d-standard-8 \
+ --maintenance-policy=TERMINATE --provisioning-model=STANDARD \
+ --no-service-account --no-scopes \
+ --tags=http-server \
+ --network-interface=subnet=my-il5-network \
+--create-disk=boot=yes,device-name=sentiment-service,image=projects/debian-cloud/global/images/debian-12-bookworm-v20240213,mode=rw,size=100,type=projects/my-il5-project/zones/us-central1-b/diskTypes/pd-ssd,kms-key=projects/my-il5-project/locations/us-central1/keyRings/central_il5_key_ring/cryptoKeys/central_il5_key,mode=rw  \
+ --confidential-compute \
+ --metadata=enable-oslogin=TRUE,startup-script='#! /bin/bash
+  apt install -y python3 python3-pip python3-full nodejs npm
+  mkdir /venv
+  python3 -m venv /venv 
+  cd /venv
+  ./bin/pip install -U deepsparse deepsparse[server] deepsparse[transformers]
+  ./bin/deepsparse.server --task sentiment-analysis --model_path zoo:nlp/sentiment_analysis/obert-base/pytorch/huggingface/sst2/pruned90_quant-none --host 0.0.0.0 --port 8080 &
+  mkdir /app 
+  cd /app
+  npm init
+  npm install express axios
+curl https://raw.githubusercontent.com/nomisbeme/next2024/main/app.js > ./app.js
+node app.js'
