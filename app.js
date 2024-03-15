@@ -13,7 +13,7 @@ let lastScore = ""
 app.get('/', (req, res) => {
         res.send(`
         <html><head>
-        <title>Sentiment Analyzer for InsureCorp</title>
+        <title>Tennis Rackets Sentiment Analyzer</title>
         <style>
         h1 { font-family: sans-serif; }
         #sentiment { font-size: 64pt; }
@@ -21,10 +21,13 @@ app.get('/', (req, res) => {
         </style>
         </head>
         <body>
-        <H1>Sentiment Analyzer for InsureCorp</H1>
+        <H1>Tennis At Nellis Sentiment Analyzer</H1>
+	<P>Enter the &#127934; review below:</p>
         <form action="/" method="post">
-                <input id="review" type="text" name="review" size=60 value=""/>
+                <textarea id="review" name="review" rows=3 cols=40></textarea>
+		<p>
                 <input type="submit" name="Process" value="OK" />
+		</p>
         </form>
         <div id="sentiment">
         ${lastSentiment}
