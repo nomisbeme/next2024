@@ -9,29 +9,30 @@ app.use(express.urlencoded({ extended: true }));
 
 let lastSentiment = ""
 let lastScore = ""
+let lastReview = ""
 
 app.get('/', (req, res) => {
         res.send(`
         <html><head>
-        <title>Tennis Rackets Sentiment Analyzer</title>
+        <title>Training Sentiment Analyzer</title>
         <style>
         h1 { font-family: sans-serif; }
         #sentiment { font-size: 64pt; }
-        #score { font-size: 8pt; color: gray; }
+        #score { font-size: 8pt; color: white; }
         </style>
         </head>
         <body>
-        <H1>Tennis At Nellis Sentiment Analyzer</H1>
+        <H1>Training Sentiment Analyzer</H1>
 	<P>Enter the &#127934; review below:</p>
-        <form action="/" method="post">
-                <textarea id="review" name="review" rows=3 cols=40></textarea>
+        <form action='/' method='post'>
+                <textarea id='review' name='review' rows=3 cols=40>${lastReview}</textarea>
 		<p>
-                <input type="submit" name="Process" value="OK" />
+                <input type='submit' name='Process' value='OK' />
 		</p>
         </form>
-        <div id="sentiment">
+        <div id='sentiment'>
         ${lastSentiment}
-        </div><p id="score">
+        </div><p id='score'>
         ${lastScore}
         </p>
         </body>
@@ -41,6 +42,8 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res) => {
         let review = req.body["review"]
+	review = review.trim()
+	lastReview = review
         console.log(review);
 
         const headers = { 'Content-Type': 'application/json' };
