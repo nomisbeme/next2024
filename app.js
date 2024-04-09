@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
         </head>
         <body>
         <H1>Training Sentiment Analyzer</H1>
-	<P>Enter the &#127934; review below:</p>
+	<P>Enter the review below:</p>
         <form action='/' method='post'>
                 <textarea id='review' name='review' rows=3 cols=40>${lastReview}</textarea>
 		<p>
